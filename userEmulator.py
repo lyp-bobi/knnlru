@@ -1,5 +1,5 @@
 from queueManager import queueManager
-import threading
+from multiprocessing.dummy import Pool as ThreadPool
 from visitor import visitor
 from mbr import mbr
 
@@ -16,17 +16,16 @@ global QuMng
 QuMng=queueManager(mbrs)
 sum=0
 for j in range(100):#num of tests
-    threadList = []
-    def thread_process():
+    def process(mm):
         global QuMng
         vis = visitor(QuMng)
         vis.visit()
-    for tid in range(3):#num of users
-        th = threading.Thread(target=thread_process, args=())
-        threadList.append(th)
-        th.start()
+    items=range(3)#num of users
+    pool = ThreadPool()
+    pool.map(process, items)
+    pool.close()
+    pool.join()
 
-    th.join()
 
     print(QuMng.hit1,QuMng.miss1,QuMng.hit1*1.0/(QuMng.hit1+QuMng.miss1))
     print(QuMng.hit2,QuMng.miss2,QuMng.hit2*1.0/(QuMng.hit2+QuMng.miss2))
