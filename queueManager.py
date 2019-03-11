@@ -14,6 +14,7 @@ class queueManager:
     def getSpatial(self,x,y,r):
         for mbr in self.mbrs:
             if mbr.dist2p(x,y) < r:
+                # print("checking" + str(mbr))
                 result1=self.qu1.get(str(mbr))
                 if result1 ==-1:
                     self.miss1+=1
