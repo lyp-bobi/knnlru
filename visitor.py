@@ -10,7 +10,7 @@ class visitor:
         X1, Y1 = make_classification(n_samples=400, n_features=2, n_redundant=0,
                                      n_clusters_per_class=1, n_classes=4)
         for row in X1:
-            self.quMng.getSpatial(row[0]*5-167,row[1]*76,random.random()*0.0001)
+            self.quMng.getSpatial(row[0]*5-167,row[1]*76,random.random()*0.001)
         # for i in range(200):
         #     if random.random()<0.05:
         #         x=random.random()*5-167
