@@ -45,17 +45,26 @@ class kNNLRUCache(cacheQueue):
     # @param value, an integer
     # @return nothing
     def set(self, key, value):
+        removed=""
         if key in self.cache:
             self.used_list.remove(key)
         elif len(self.cache) == self.capacity:
-            self.cache.pop(self.used_list.pop(0))
+            removed=self.used_list.pop(0)
+            self.cache.pop(removed)
         self.used_list.append(key)
         self.cache[key] = value
         self.knn_list[key]= knnlist(key,self.k)
         for mbrstr in self.cache:
             if mbrstr!=key:
+                if removed in self.knn_list[mbrstr].list:
+                    self.knn_list[mbrstr].list.remove(removed)
                 self.knn_list[key].tryinsert(mbrstr)
                 self.knn_list[mbrstr].tryinsert(key)
+        for (dist, mbrstri) in self.knn_list[key].list:
+            if mbrstri in self.used_list:
+                # print(mbrstri)
+                self.used_list.remove(mbrstri)
+                self.used_list.append(mbrstri)
 
 
 
